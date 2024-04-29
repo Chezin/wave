@@ -1,13 +1,13 @@
 import axios, { AxiosError } from "axios";
 import { useState, useReducer } from "react";
 
-const REGISTER_URL = "/register";
+const REGISTER_URL = "http://localhost:3500/register";
 
 const EMAIL_REGEX = new RegExp(
 	"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\\b"
 );
 const PASSWORD_REGEX = new RegExp(
-	"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"
+	"^(?=.*[a-z])(?=.*[A-Z])(?=.*d)[a-zA-Zd]{8,}$"
 );
 
 type SignUpParams = {
@@ -70,14 +70,13 @@ const RegistrationForm = () => {
 			try {
 				await axios.post(REGISTER_URL, payload, {
 					headers: { "Content-Type": "application/json" },
-					withCredentials: true,
 				});
 			} catch (error: unknown) {
 				// TODO add error codes and proper messages
 				if (error instanceof AxiosError) {
 					console.log(error.message);
 				}
-				console.log("deu pau");
+				console.error("deu pau");
 			}
 		}
 	};
