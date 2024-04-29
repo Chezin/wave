@@ -35,9 +35,9 @@ const signUpReducer = (state: SignUpParams, action: SignUpAction) => {
 };
 
 const RegistrationForm = () => {
-	const [isValidEmail, setIsValidEmail] = useState(false);
-	const [isValidPassword, setIsValidPassword] = useState(false);
-	const [passwordMatches, setPasswordMatches] = useState(false);
+	const [isValidEmail, setIsValidEmail] = useState(true);
+	const [isValidPassword, setIsValidPassword] = useState(true);
+	const [passwordMatches, setPasswordMatches] = useState(true);
 
 	const [signUpState, setSignUpState] = useReducer(
 		signUpReducer,
@@ -54,6 +54,7 @@ const RegistrationForm = () => {
 		setIsValidEmail(emailRegex.test(signUpState.email));
 		setPasswordMatches(signUpState.password == signUpState.matchPassword);
 		setIsValidPassword(passwordRegex.test(signUpState.password));
+
 		if (
 			emailRegex.test(signUpState.email) &&
 			signUpState.password == signUpState.matchPassword &&
@@ -63,79 +64,93 @@ const RegistrationForm = () => {
 		}
 	};
 
-	// const [errorMessage, setErrorMessage] = useState("");
-	// const [success, setSuccess] = useState(false);
-
-	// console.log(signUpState.email, emailRegex.test(signUpState.email));
-
 	return (
-		<form onSubmit={handleSubmit} className="max-w-[45rem]">
-			{isValidEmail ? (
-				""
-			) : (
-				<div className="badge badge-error gap-2">Invalid e-mail</div>
-			)}
-			<label className="input input-bordered flex items-center gap-2">
-				<input
-					type="text"
-					className="grow"
-					placeholder="Email"
-					value={signUpState.email}
-					onChange={(e) => {
-						setSignUpState({
-							type: "SET_EMAIL",
-							payload: e.target.value,
-						});
-					}}
-				/>
-			</label>
-
+		<form onSubmit={handleSubmit} className="w-[35rem]">
+			<div className="mb-4">
+				{isValidEmail ? (
+					""
+				) : (
+					<div className="badge badge-error gap-2">
+						Invalid e-mail
+					</div>
+				)}
+				<label
+					className={`input ${
+						isValidEmail ? "input-bordered" : "input-error"
+					} flex items-center gap-2`}
+				>
+					<input
+						type="text"
+						className="grow"
+						placeholder="Email"
+						value={signUpState.email}
+						onChange={(e) => {
+							setSignUpState({
+								type: "SET_EMAIL",
+								payload: e.target.value,
+							});
+						}}
+					/>
+				</label>
+			</div>
 			{isValidPassword ? (
 				""
 			) : (
 				<div className="badge badge-error h-fit">
-					A senha deve ter mais de 8 caracteres, contendo pelo uma
-					letra maiuscula, uma letra minuscula e um número.
+					Password must have at least 8 characters, containing at
+					least 1 lowercase character, 1 uppercase character and 1
+					number
 				</div>
 			)}
-			<label className="input input-bordered flex items-center gap-2">
-				<input
-					type="password"
-					className="grow"
-					placeholder="Password"
-					value={signUpState.password}
-					onChange={(e) => {
-						setSignUpState({
-							type: "SET_PASSWORD",
-							payload: e.target.value,
-						});
-					}}
-				/>
-			</label>
-
+			<div className="mb-4">
+				<label
+					className={`input ${
+						isValidPassword ? "input-bordered" : "input-error"
+					} flex items-center gap-2`}
+				>
+					<input
+						type="password"
+						className="grow"
+						placeholder="Password"
+						value={signUpState.password}
+						onChange={(e) => {
+							setSignUpState({
+								type: "SET_PASSWORD",
+								payload: e.target.value,
+							});
+						}}
+					/>
+				</label>
+			</div>
 			{passwordMatches ? (
 				""
 			) : (
 				<div className="badge badge-error h-fit">
-					Verifique se as senhas são iguais
+					Passwords must match
 				</div>
 			)}
-			<label className="input input-bordered flex items-center gap-2">
-				<input
-					type="password"
-					placeholder="Repeat Password"
-					className="grow"
-					value={signUpState.matchPassword}
-					onChange={(e) => {
-						setSignUpState({
-							type: "SET_MATCH_PASSWORD",
-							payload: e.target.value,
-						});
-					}}
-				/>
-			</label>
-			<div className="flex justify-center">
-				<button className="btn" type="submit">
+			<div className="mb-4">
+				<label
+					className={`input ${
+						passwordMatches ? "input-bordered" : "input-error"
+					} flex items-center gap-2`}
+				>
+					<input
+						type="password"
+						placeholder="Repeat Password"
+						className="grow"
+						value={signUpState.matchPassword}
+						onChange={(e) => {
+							setSignUpState({
+								type: "SET_MATCH_PASSWORD",
+								payload: e.target.value,
+							});
+						}}
+					/>
+				</label>
+			</div>
+			<div className="flex justify-center mt-10">
+				<button className="btn w-32" type="submit">
 					Send
 				</button>
 			</div>
