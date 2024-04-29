@@ -1,10 +1,12 @@
+import axios, { AxiosError } from "axios";
 import { useState, useReducer } from "react";
 
-const emailRegex = new RegExp(
+const REGISTER_URL = "/register";
+
+const EMAIL_REGEX = new RegExp(
 	"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\\b"
 );
-
-const passwordRegex = new RegExp(
+const PASSWORD_REGEX = new RegExp(
 	"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"
 );
 
@@ -44,23 +46,39 @@ const RegistrationForm = () => {
 		initialState
 	);
 
-	const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+	const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
 		e.preventDefault();
 		console.log(
 			signUpState.email,
 			signUpState.password,
 			signUpState.matchPassword
 		);
-		setIsValidEmail(emailRegex.test(signUpState.email));
+		setIsValidEmail(EMAIL_REGEX.test(signUpState.email));
 		setPasswordMatches(signUpState.password == signUpState.matchPassword);
-		setIsValidPassword(passwordRegex.test(signUpState.password));
+		setIsValidPassword(EMAIL_REGEX.test(signUpState.password));
 
 		if (
-			emailRegex.test(signUpState.email) &&
+			EMAIL_REGEX.test(signUpState.email) &&
 			signUpState.password == signUpState.matchPassword &&
-			passwordRegex.test(signUpState.password)
+			PASSWORD_REGEX.test(signUpState.password)
 		) {
-			console.log("ma oe");
+			const payload = {
+				email: signUpState.email,
+				password: signUpState.password,
+			};
+
+			try {
+				await axios.post(REGISTER_URL, payload, {
+					headers: { "Content-Type": "application/json" },
+					withCredentials: true,
+				});
+			} catch (error: unknown) {
+				// TODO add error codes and proper messages
+				if (error instanceof AxiosError) {
+					console.log(error.message);
+				}
+				console.log("deu pau");
+			}
 		}
 	};
 
