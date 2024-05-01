@@ -1,27 +1,44 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useState, useReducer } from "react";
+import Cookie from "js-cookie";
+import { PatternFormat } from "react-number-format";
 
-const REGISTER_URL = "http://localhost:3500/register";
+const REGISTER_URL = "http://localhost:3500/auth/register";
+const LOGIN_URL = "http://localhost:3500/auth/login";
 
 const EMAIL_REGEX = new RegExp(
 	"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\\b"
 );
-const PASSWORD_REGEX = new RegExp(
-	"^(?=.*[a-z])(?=.*[A-Z])(?=.*d)[a-zA-Zd]{8,}$"
-);
+const PASSWORD_REGEX = new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
 
 type SignUpParams = {
 	email: string;
 	password: string;
 	matchPassword: string;
+	firstName: string;
+	lastName: string;
+	phoneNumber: string;
 };
 
 type SignUpAction = {
-	type: "SET_EMAIL" | "SET_PASSWORD" | "SET_MATCH_PASSWORD";
+	type:
+		| "SET_EMAIL"
+		| "SET_PASSWORD"
+		| "SET_MATCH_PASSWORD"
+		| "SET_FIRST_NAME"
+		| "SET_LAST_NAME"
+		| "SET_PHONE_NUMBER";
 	payload: string;
 };
 
-const initialState = { email: "", password: "", matchPassword: "" };
+const initialState = {
+	email: "",
+	password: "",
+	matchPassword: "",
+	firstName: "",
+	lastName: "",
+	phoneNumber: "",
+};
 
 const signUpReducer = (state: SignUpParams, action: SignUpAction) => {
 	switch (action.type) {
@@ -31,6 +48,12 @@ const signUpReducer = (state: SignUpParams, action: SignUpAction) => {
 			return { ...state, password: action.payload };
 		case "SET_MATCH_PASSWORD":
 			return { ...state, matchPassword: action.payload };
+		case "SET_FIRST_NAME":
+			return { ...state, firstName: action.payload };
+		case "SET_LAST_NAME":
+			return { ...state, lastName: action.payload };
+		case "SET_PHONE_NUMBER":
+			return { ...state, phoneNumber: action.payload };
 		default:
 			return state;
 	}
@@ -40,7 +63,6 @@ const RegistrationForm = () => {
 	const [isValidEmail, setIsValidEmail] = useState(true);
 	const [isValidPassword, setIsValidPassword] = useState(true);
 	const [passwordMatches, setPasswordMatches] = useState(true);
-
 	const [signUpState, setSignUpState] = useReducer(
 		signUpReducer,
 		initialState
@@ -48,15 +70,10 @@ const RegistrationForm = () => {
 
 	const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
 		e.preventDefault();
-		console.log(
-			signUpState.email,
-			signUpState.password,
-			signUpState.matchPassword
-		);
+
 		setIsValidEmail(EMAIL_REGEX.test(signUpState.email));
 		setPasswordMatches(signUpState.password == signUpState.matchPassword);
-		setIsValidPassword(EMAIL_REGEX.test(signUpState.password));
-
+		setIsValidPassword(PASSWORD_REGEX.test(signUpState.password));
 		if (
 			EMAIL_REGEX.test(signUpState.email) &&
 			signUpState.password == signUpState.matchPassword &&
@@ -66,17 +83,28 @@ const RegistrationForm = () => {
 				email: signUpState.email,
 				password: signUpState.password,
 			};
-
 			try {
-				await axios.post(REGISTER_URL, payload, {
-					headers: { "Content-Type": "application/json" },
-				});
-			} catch (error: unknown) {
-				// TODO add error codes and proper messages
-				if (error instanceof AxiosError) {
-					console.log(error.message);
-				}
-				console.error("deu pau");
+				await axios
+					.post(REGISTER_URL, payload, {
+						headers: { "Content-Type": "application/json" },
+					})
+					.then((response: AxiosResponse) => {
+						const { accessToken, refreshToken, user } =
+							response.data;
+						console.log(accessToken, refreshToken, user);
+						Cookie.set("jwt", accessToken);
+						Cookie.set("user_id", user.id);
+					})
+					.finally(() => {
+						axios.post(LOGIN_URL, payload, {
+							headers: {
+								"Content-Type": "application/json",
+								authorization: Cookie.get("jwt"),
+							},
+						});
+					});
+			} catch (error) {
+				console.log(error);
 			}
 		}
 	};
@@ -84,6 +112,7 @@ const RegistrationForm = () => {
 	return (
 		<form onSubmit={handleSubmit} className="w-[35rem]">
 			<div className="mb-4">
+				<span className="label-text">Email</span>
 				{isValidEmail ? (
 					""
 				) : (
@@ -110,6 +139,58 @@ const RegistrationForm = () => {
 					/>
 				</label>
 			</div>
+			<div className="mb-2">
+				<span className="label-text">Name</span>
+				<label className="input input-bordered flex items-center gap-2">
+					<input
+						type="text"
+						placeholder="First name"
+						className="grow"
+						value={signUpState.firstName}
+						onChange={(e) => {
+							setSignUpState({
+								type: "SET_FIRST_NAME",
+								payload: e.target.value,
+							});
+						}}
+					/>
+				</label>
+			</div>
+			<div className="mb-4">
+				<label className="input input-bordered flex items-center gap-2">
+					<input
+						type="text"
+						placeholder="Last name"
+						className="grow"
+						value={signUpState.lastName}
+						onChange={(e) => {
+							setSignUpState({
+								type: "SET_LAST_NAME",
+								payload: e.target.value,
+							});
+						}}
+					/>
+				</label>
+			</div>
+			<div className="mb-4">
+				<span className="label-text">Phone</span>
+				<label className="input input-bordered flex items-center gap-2">
+					<PatternFormat
+						format="+55 (##) ##### ####"
+						displayType="input"
+						type="tel"
+						className="grow"
+						placeholder="Phone number"
+						value={signUpState.phoneNumber}
+						onChange={(e) => {
+							setSignUpState({
+								type: "SET_PHONE_NUMBER",
+								payload: e.target.value,
+							});
+						}}
+					/>
+				</label>
+			</div>
 			{isValidPassword ? (
 				""
 			) : (
@@ -119,7 +200,8 @@ const RegistrationForm = () => {
 					number
 				</div>
 			)}
-			<div className="mb-4">
+			<div className="mb-2">
+				<span className="label-text">Password</span>
 				<label
 					className={`input ${
 						isValidPassword ? "input-bordered" : "input-error"
@@ -128,7 +210,7 @@ const RegistrationForm = () => {
 					<input
 						type="password"
 						className="grow"
-						placeholder="Password"
+						placeholder="Must have at least 8 characters"
 						value={signUpState.password}
 						onChange={(e) => {
 							setSignUpState({
