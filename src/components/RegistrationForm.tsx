@@ -81,6 +81,9 @@ const RegistrationForm = () => {
 		) {
 			const payload = {
 				email: signUpState.email,
+				firstName: signUpState.firstName,
+				lastName: signUpState.lastName,
+				phoneNumber: signUpState.phoneNumber,
 				password: signUpState.password,
 			};
 			try {
