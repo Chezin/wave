@@ -1,6 +1,8 @@
 import { useAuth } from "../components/AuthProvider";
+import { useAuthGuard } from "../hooks/useAuthGuard";
 
 const Profile = () => {
+	useAuthGuard();
 	const { user } = useAuth();
 	return (
 		<div className="flex flex-col items-center justify-center mt-60 text-primary">
