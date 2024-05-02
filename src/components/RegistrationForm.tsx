@@ -1,10 +1,10 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { useState, useReducer } from "react";
 import Cookie from "js-cookie";
 import { PatternFormat } from "react-number-format";
+import { useAuth } from "./AuthProvider";
 
 const REGISTER_URL = "http://localhost:3500/auth/register";
-const LOGIN_URL = "http://localhost:3500/auth/login";
 
 const EMAIL_REGEX = new RegExp(
 	"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\\b"
@@ -67,6 +67,7 @@ const RegistrationForm = () => {
 		signUpReducer,
 		initialState
 	);
+	const { setUser } = useAuth();
 
 	const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
 		e.preventDefault();
@@ -87,25 +88,21 @@ const RegistrationForm = () => {
 				password: signUpState.password,
 			};
 			try {
-				await axios
-					.post(REGISTER_URL, payload, {
+				const registerResponse = await axios.post(
+					REGISTER_URL,
+					payload,
+					{
 						headers: { "Content-Type": "application/json" },
-					})
-					.then((response: AxiosResponse) => {
-						const { accessToken, refreshToken, user } =
-							response.data;
-						console.log(accessToken, refreshToken, user);
-						Cookie.set("jwt", accessToken);
-						Cookie.set("user_id", user.id);
-					})
-					.finally(() => {
-						axios.post(LOGIN_URL, payload, {
-							headers: {
-								"Content-Type": "application/json",
-								authorization: Cookie.get("jwt"),
-							},
-						});
-					});
+					}
+				);
+				const { refreshToken, accessToken, user } =
+					registerResponse.data;
+
+				console.log("user:", user);
+
+				Cookie.set("refresh-token", refreshToken);
+				Cookie.set("access-token", accessToken);
+				setUser(user);
 			} catch (error) {
 				console.log(error);
 			}

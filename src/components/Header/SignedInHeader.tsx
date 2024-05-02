@@ -1,8 +1,10 @@
-const Header = () => {
+const SignedInHeader = () => {
 	return (
 		<div className="navbar">
 			<div className="flex-1">
-				<a className="btn btn-ghost text-xl">Wave</a>
+				<a className="btn btn-ghost text-xl" href="/">
+					Wave
+				</a>
 			</div>
 			<div className="flex-none">
 				<div className="dropdown dropdown-end">
@@ -64,7 +66,7 @@ const Header = () => {
 						className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
 					>
 						<li>
-							<a className="justify-between">
+							<a href="/me" className="justify-between">
 								Profile
 								<span className="badge">New</span>
 							</a>
@@ -82,4 +84,4 @@ const Header = () => {
 	);
 };
 
-export default Header;
+export default SignedInHeader;
