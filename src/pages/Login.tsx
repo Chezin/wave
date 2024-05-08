@@ -1,5 +1,9 @@
-import axios, { AxiosError } from "axios";
-import { useReducer } from "react";
+import { AxiosError } from "axios";
+import { useReducer, useState } from "react";
+import Cookies from "js-cookie";
+import { useAuth } from "../components/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import api from "../api/api";
 
 type LoginParams = {
 	email: string;
@@ -11,7 +15,7 @@ type LoginAction = {
 	payload: string;
 };
 
-const REGISTER_URL = "http://localhost:3500/login";
+const LOGIN_URL = "http://localhost:3500/auth/login";
 
 const loginReducer = (state: LoginParams, action: LoginAction) => {
 	switch (action.type) {
@@ -27,6 +31,9 @@ const loginReducer = (state: LoginParams, action: LoginAction) => {
 const Login = () => {
 	const initialState = { email: "", password: "" };
 	const [loginState, setLoginState] = useReducer(loginReducer, initialState);
+	const { setUser } = useAuth();
+	const navigate = useNavigate();
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
 		e.preventDefault();
@@ -37,11 +44,20 @@ const Login = () => {
 		};
 
 		try {
-			await axios.post(REGISTER_URL, payload, {
+			setIsLoading(true);
+			const response = await api.post(LOGIN_URL, payload, {
 				headers: { "Content-Type": "application/json" },
 			});
+
+			const { refreshToken, accessToken, foundUser } = response.data;
+			Cookies.set("refresh-token", refreshToken);
+			Cookies.set("access-token", accessToken);
+
+			setUser(foundUser);
+			navigate("/");
 		} catch (error: unknown) {
 			if (error instanceof AxiosError) {
+				setIsLoading(false);
 				console.log(error.message);
 			}
 		}
@@ -82,9 +98,19 @@ const Login = () => {
 				</label>
 			</div>
 			<div className="flex justify-center mt-10">
-				<button className="btn w-32" type="submit">
-					Send
-				</button>
+				{isLoading ? (
+					<button
+						className="btn btn-ghost w-32"
+						type="submit"
+						disabled
+					>
+						Sending
+					</button>
+				) : (
+					<button className="btn w-32" type="submit">
+						Send
+					</button>
+				)}
 			</div>
 		</form>
 	);

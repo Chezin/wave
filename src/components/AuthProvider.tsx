@@ -7,7 +7,7 @@ import {
 	useState,
 } from "react";
 import Cookies from "js-cookie";
-import axios from "axios";
+import api from "../api/api";
 
 const PROFILE_URL = "http://localhost:3500/users/me";
 
@@ -34,10 +34,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 	const loadUser = useCallback(async () => {
 		console.log(Cookies.get("access-token"), "- JWT");
 		try {
-			const response = await axios.get(PROFILE_URL, {
+			const response = await api.get(PROFILE_URL, {
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: "Bearer " + Cookies.get("access-token"),
 				},
 			});
 			setUser(response.data);

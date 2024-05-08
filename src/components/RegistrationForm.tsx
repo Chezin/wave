@@ -3,6 +3,7 @@ import { useState, useReducer } from "react";
 import Cookie from "js-cookie";
 import { PatternFormat } from "react-number-format";
 import { useAuth } from "./AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const REGISTER_URL = "http://localhost:3500/auth/register";
 
@@ -68,6 +69,7 @@ const RegistrationForm = () => {
 		initialState
 	);
 	const { setUser } = useAuth();
+	const navigate = useNavigate();
 
 	const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
 		e.preventDefault();
@@ -98,11 +100,10 @@ const RegistrationForm = () => {
 				const { refreshToken, accessToken, user } =
 					registerResponse.data;
 
-				console.log("user:", user);
-
 				Cookie.set("refresh-token", refreshToken);
 				Cookie.set("access-token", accessToken);
 				setUser(user);
+				navigate("/");
 			} catch (error) {
 				console.log(error);
 			}

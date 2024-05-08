@@ -10,6 +10,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import { AuthProvider } from "./components/AuthProvider.tsx";
 import Profile from "./pages/Profile.tsx";
+import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
 
 const router = createBrowserRouter([
 	{
@@ -27,7 +28,11 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/me",
-		element: <Profile />,
+		element: (
+			<ProtectedRoute>
+				<Profile />
+			</ProtectedRoute>
+		),
 	},
 ]);
 

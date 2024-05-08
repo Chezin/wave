@@ -1,4 +1,11 @@
+import Cookies from "js-cookie";
+
 const SignedInHeader = () => {
+	const handleLogout = () => {
+		Cookies.remove("access-token");
+		Cookies.remove("refresh-token");
+	};
+
 	return (
 		<div className="navbar">
 			<div className="flex-1">
@@ -75,7 +82,9 @@ const SignedInHeader = () => {
 							<a>Settings</a>
 						</li>
 						<li>
-							<a>Logout</a>
+							<a onClick={handleLogout} href="/">
+								Logout
+							</a>
 						</li>
 					</ul>
 				</div>
