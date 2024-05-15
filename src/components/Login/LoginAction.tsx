@@ -2,8 +2,8 @@ import { AxiosError, AxiosResponse } from "axios";
 import { useReducer, useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthProvider";
-import api from "../../api/api";
+import { useAuth } from "../../services/providers/AuthProvider";
+import api from "../../services/api/api";
 import { Login } from "./index";
 
 type LoginParams = {

@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import api from "../../api/api";
+import api from "../../services/api/api";
 import { AxiosError } from "axios";
 import { User } from "../../types/types";
 import UserCard from "./UserCard";
-import { Pagination } from "../Pagination";
+import { Pagination } from "../ui/Pagination";
 
 const GET_USERS_URL = "http://localhost:3500/users/getPaginatedUsers";
 const RESULTS_PER_PAGE = 10; //make this be changeable
@@ -51,32 +51,30 @@ const UserList = () => {
 		<div className="flex justify-center">
 			<div>
 				<div className="overflow-x-auto">
-					<table className="table">
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>Email</th>
-								<th>Full Name</th>
-								<th>Phone</th>
-							</tr>
-						</thead>
-						<tbody>
-							{isLoading ? (
-								<div className="flex justify-center items-center">
-									<span className="loading loading-dots loading-lg"></span>
-								</div>
-							) : (
-								content
-							)}
-						</tbody>
-					</table>
-
+					{isLoading ? (
+						<div className="flex justify-center items-center">
+							<span className="loading loading-dots loading-lg"></span>
+						</div>
+					) : (
+						<table className="table">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Email</th>
+									<th>Full Name</th>
+									<th>Phone</th>
+								</tr>
+							</thead>
+							<tbody>{content}</tbody>
+						</table>
+					)}
 					<Pagination
 						currentPage={currentPage}
 						resultsPerPage={RESULTS_PER_PAGE}
 						setCurrentPage={setCurrentPage}
 						setSkip={setSkip}
 						totalItems={userCount}
+						skip={skip}
 					/>
 				</div>
 			</div>

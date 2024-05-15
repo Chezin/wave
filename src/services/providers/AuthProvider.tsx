@@ -8,7 +8,7 @@ import {
 	useState,
 } from "react";
 import api from "../api/api";
-import { User } from "../types/types";
+import { User } from "../../types/types";
 
 const PROFILE_URL = "http://localhost:3500/users/me";
 

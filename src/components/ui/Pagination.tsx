@@ -6,6 +6,7 @@ interface PaginationProps {
 	currentPage: number;
 	totalItems: number;
 	resultsPerPage: number;
+	skip: number;
 }
 
 export const Pagination: React.FC<PaginationProps> = ({
@@ -15,13 +16,26 @@ export const Pagination: React.FC<PaginationProps> = ({
 	totalItems,
 	resultsPerPage,
 }) => {
+	let newPage;
+	const getPrevious = () => {
+		newPage = currentPage - 1;
+		setCurrentPage(newPage);
+		setSkip((newPage - 1) * resultsPerPage);
+	};
+
+	const getNext = () => {
+		newPage = currentPage + 1;
+		setCurrentPage(newPage);
+		setSkip((newPage - 1) * resultsPerPage);
+	};
+
 	const pagination = [];
 	const totalPages = Math.ceil(totalItems / resultsPerPage);
 	for (let i = 1; i <= totalPages; i++) {
 		pagination.push(
 			<button
 				key={i}
-				className="join-item btn m-1"
+				className="join-item btn mr-[2px] ml-[2px]"
 				disabled={currentPage === i}
 				onClick={() => {
 					setCurrentPage(i);
@@ -33,33 +47,20 @@ export const Pagination: React.FC<PaginationProps> = ({
 		);
 	}
 
-	console.log(currentPage, "currentPage");
-	console.log(totalPages, "totalPages");
-
 	return (
-		<div className="flex justify-center mt-4 space-x-1">
+		<div className="flex justify-center space-x-1 m-2">
 			<button
-				className="btn btn-sm"
+				className="btn join-item"
 				disabled={currentPage === 1}
-				onClick={() => {
-					setCurrentPage(currentPage - 1);
-					console.log(currentPage, "PREV CURRENT PAGE");
-					setSkip((currentPage - 1) * resultsPerPage);
-				}}
+				onClick={getPrevious}
 			>
 				Prev
 			</button>
-
-			<div className="flex space-x-1">{pagination}</div>
-
+			{pagination}
 			<button
-				className="btn btn-sm"
+				className="btn join-item"
 				disabled={currentPage === totalPages}
-				onClick={() => {
-					setCurrentPage(currentPage + 1);
-					console.log(currentPage, "NEXT CURRENT PAGE");
-					setSkip((currentPage - 1) * resultsPerPage);
-				}}
+				onClick={getNext}
 			>
 				Next
 			</button>

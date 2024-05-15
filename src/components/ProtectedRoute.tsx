@@ -1,5 +1,5 @@
 import { PropsWithChildren, useEffect } from "react";
-import { useAuth } from "./AuthProvider";
+import { useAuth } from "../services/providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 export const ProtectedRoute = ({ children }: PropsWithChildren) => {

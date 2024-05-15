@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 
-const SignedInHeader = () => {
+const HeaderSignedIn = () => {
 	const handleLogout = () => {
 		Cookies.remove("access-token");
 		Cookies.remove("refresh-token");
@@ -93,4 +93,4 @@ const SignedInHeader = () => {
 	);
 };
 
-export default SignedInHeader;
+export default HeaderSignedIn;

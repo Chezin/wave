@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useReducer } from "react";
 import Cookie from "js-cookie";
 import { PatternFormat } from "react-number-format";
-import { useAuth } from "./AuthProvider";
+import { useAuth } from "../services/providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 const REGISTER_URL = "http://localhost:3500/auth/register";

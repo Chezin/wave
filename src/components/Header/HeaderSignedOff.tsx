@@ -1,4 +1,4 @@
-const SignedOutHeader = () => {
+const HeaderSignedOff = () => {
 	return (
 		<div className="navbar">
 			<div className="flex-1">
@@ -15,4 +15,4 @@ const SignedOutHeader = () => {
 	);
 };
 
-export default SignedOutHeader;
+export default HeaderSignedOff;
