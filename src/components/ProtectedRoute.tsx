@@ -7,7 +7,6 @@ export const ProtectedRoute = ({ children }: PropsWithChildren) => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		console.log("User is: ", user);
 		if (user === null) {
 			navigate("/signin", { replace: true });
 		}

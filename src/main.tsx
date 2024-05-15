@@ -11,6 +11,7 @@ import "./index.css";
 import { AuthProvider } from "./components/AuthProvider.tsx";
 import Profile from "./pages/Profile.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
+import Admin from "./pages/Admin.tsx";
 
 const router = createBrowserRouter([
 	{
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
 			</ProtectedRoute>
 		),
 	},
+	{
+		path: "/admin",
+		element: <Admin />,
+	},
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -43,7 +48,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 			<div className="body bg-base-100">
 				<RouterProvider router={router} />
 			</div>
+			<Footer />
 		</AuthProvider>
-		<Footer />
 	</React.StrictMode>
 );

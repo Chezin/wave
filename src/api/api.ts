@@ -17,14 +17,11 @@ api.interceptors.request.use(
 api.interceptors.response.use(
 	(response) => response,
 	async (error) => {
-		console.log("status", error.status);
 		const originalRequest = error.config;
 
 		if (error.status === 401) {
-			console.log("error config", error.config);
 			try {
 				const refreshToken = Cookies.get("refresh-token");
-				console.log("old refresh token: ", refreshToken);
 				const response = await axios.post(
 					"http://localhost:3500/auth/refresh",
 					{
