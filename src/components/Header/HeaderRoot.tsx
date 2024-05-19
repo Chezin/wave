@@ -1,5 +1,5 @@
 import { Header } from ".";
-import { useAuth } from "../../services/providers/AuthProvider";
+import useAuth  from "../../hooks/useAuth";
 
 const HeaderRoot = () => {
 	const { user } = useAuth();

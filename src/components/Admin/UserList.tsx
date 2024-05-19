@@ -74,7 +74,6 @@ const UserList = () => {
 						setCurrentPage={setCurrentPage}
 						setSkip={setSkip}
 						totalItems={userCount}
-						skip={skip}
 					/>
 				</div>
 			</div>

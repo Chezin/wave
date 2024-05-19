@@ -10,13 +10,13 @@ type LoginAction = {
 	payload: string;
 };
 
-interface LoginContentProps {
+type LoginContentProps = {
+	handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 	loginState: LoginParams;
 	setLoginState: React.Dispatch<LoginAction>;
-	handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-	error: number | undefined;
+	error?: number;
 	isLoading: boolean;
-}
+};
 
 const LoginContent = ({
 	handleSubmit,

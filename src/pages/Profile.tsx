@@ -1,4 +1,4 @@
-import { useAuth } from "../services/providers/AuthProvider";
+import useAuth from "../hooks/useAuth";
 
 const Profile = () => {
 	const { user } = useAuth();

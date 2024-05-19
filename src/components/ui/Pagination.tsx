@@ -6,7 +6,6 @@ interface PaginationProps {
 	currentPage: number;
 	totalItems: number;
 	resultsPerPage: number;
-	skip: number;
 }
 
 export const Pagination: React.FC<PaginationProps> = ({
