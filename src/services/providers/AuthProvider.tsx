@@ -15,12 +15,8 @@ type AuthContextParams = {
 	setUser: (user: User | null) => void;
 };
 
-type AuthProviderProps = PropsWithChildren & {
-	isSignedIn?: boolean;
-};
-
 const AuthContext = createContext<AuthContextParams | null>(null);
-const AuthProvider = ({ children }: AuthProviderProps) => {
+const AuthProvider = ({ children }: PropsWithChildren) => {
 	const [user, setUser] = useState<User | null>(null);
 	const loadUser = useCallback(async () => {
 		try {
