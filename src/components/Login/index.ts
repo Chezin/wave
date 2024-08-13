@@ -1,13 +1,13 @@
-import LoginAction from "./LoginAction";
 import LoginButton from "./LoginButton";
-import LoginContent from "./LoginContent";
+import LoginFields from "./LoginFields";
 import LoginErrorTag from "./LoginErrorTag";
 import LoginRoot from "./LoginRoot";
+import LoginNewAccount from "./LoginNewAccount";
 
 export const Login = {
-	Action: LoginAction,
 	Button: LoginButton,
-	Content: LoginContent,
+	Fields: LoginFields,
 	ErrorTag: LoginErrorTag,
 	Root: LoginRoot,
+	NewAccount: LoginNewAccount,
 };

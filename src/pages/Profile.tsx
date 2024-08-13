@@ -1,7 +1,8 @@
-import useAuth from "../hooks/useAuth";
+import useUserSlice from "../store";
 
 const Profile = () => {
-	const { user } = useAuth();
+	const user = useUserSlice();
+	console.log(user);
 	return (
 		<div className="flex flex-col items-center justify-center mt-60 text-primary">
 			<div>Email: {user?.email}</div>

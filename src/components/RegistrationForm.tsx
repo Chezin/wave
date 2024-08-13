@@ -2,8 +2,9 @@ import axios from "axios";
 import { useState, useReducer } from "react";
 import Cookie from "js-cookie";
 import { PatternFormat } from "react-number-format";
-import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { User } from "../types/types";
+import useUserSlice from "../store";
 
 const REGISTER_URL = "http://localhost:3500/auth/register";
 
@@ -68,7 +69,15 @@ const RegistrationForm = () => {
 		signUpReducer,
 		initialState
 	);
-	const { setUser } = useAuth();
+	const { setId, setEmail, setFirstName, setLastName, setPhoneNumber } =
+		useUserSlice();
+	const setUser = (foundUser: User) => {
+		setId(foundUser.id);
+		setEmail(foundUser.email);
+		setFirstName(foundUser.firstName);
+		setLastName(foundUser.lastName);
+		setPhoneNumber(foundUser.phoneNumber);
+	};
 	const navigate = useNavigate();
 
 	const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
@@ -99,6 +108,8 @@ const RegistrationForm = () => {
 				);
 				const { refreshToken, accessToken, user } =
 					registerResponse.data;
+
+				console.log(user);
 
 				Cookie.set("refresh-token", refreshToken);
 				Cookie.set("access-token", accessToken);

@@ -7,7 +7,7 @@ const HeaderSignedIn = () => {
 	};
 
 	return (
-		<div className="navbar">
+		<div className="navbar" data-testid="signed-in-header">
 			<div className="flex-1">
 				<a className="btn btn-ghost text-xl" href="/">
 					Wave
