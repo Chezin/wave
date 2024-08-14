@@ -79,7 +79,7 @@ const HeaderSignedIn = () => {
 							</a>
 						</li>
 						<li>
-							<a>Settings</a>
+							<a href="/settings">Settings</a>
 						</li>
 						<li>
 							<a onClick={handleLogout} href="/">

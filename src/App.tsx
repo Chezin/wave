@@ -9,6 +9,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
 import LoginPage from "./pages/Login";
+import Settings from "./pages/Settings";
 
 const router = createBrowserRouter([
 	{
@@ -29,6 +30,14 @@ const router = createBrowserRouter([
 		element: (
 			<ProtectedRoute>
 				<Profile />
+			</ProtectedRoute>
+		),
+	},
+	{
+		path: "/settings",
+		element: (
+			<ProtectedRoute>
+				<Settings />
 			</ProtectedRoute>
 		),
 	},

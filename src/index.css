@@ -7,4 +7,27 @@
 	justify-content: center;
 	margin-left: 2rem;
 	margin-right: 2rem;
+	min-height: 100vh;
+}
+
+.settings-container {
+	margin-left: 30%;
+	margin-top: 2rem;
+	max-width: 70%;
+	margin-right: auto;
+}
+
+.tab {
+	font-size: medium;
+	margin-right: 0.5rem;
+}
+
+.tabs-bordered > .tab {
+	border-color: var(
+		--fallback-bc,
+		oklch(var(--bc) / var(--tw-border-opacity))
+	);
+	--tw-border-opacity: 0.2;
+	border-style: solid;
+	border-bottom-width: calc(var(--tab-border, 1px) + 2px);
 }
