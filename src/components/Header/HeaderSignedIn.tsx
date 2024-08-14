@@ -9,7 +9,10 @@ const HeaderSignedIn = () => {
 	return (
 		<div className="navbar" data-testid="signed-in-header">
 			<div className="flex-1">
-				<a className="btn btn-ghost text-xl" href="/">
+				<a
+					className="cursor-pointer text-xl font-extrabold ml-5"
+					href="/"
+				>
 					Wave
 				</a>
 			</div>
@@ -18,6 +21,7 @@ const HeaderSignedIn = () => {
 					<div
 						tabIndex={0}
 						role="button"
+						ml-5
 						className="btn btn-ghost btn-circle"
 					>
 						<div className="indicator">
