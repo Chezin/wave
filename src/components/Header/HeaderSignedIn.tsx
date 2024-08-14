@@ -21,7 +21,6 @@ const HeaderSignedIn = () => {
 					<div
 						tabIndex={0}
 						role="button"
-						ml-5
 						className="btn btn-ghost btn-circle"
 					>
 						<div className="indicator">
