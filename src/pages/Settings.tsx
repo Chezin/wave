@@ -5,7 +5,7 @@ const Settings = () => {
 	const user = useUserSlice();
 	console.log(user);
 	return (
-		<div className="settings-container">
+		<div className="center-container">
 			<div className="text-primary font-bold text-5xl mb-6">Settings</div>
 			<div className="w-full">
 				<ProfileTabs />

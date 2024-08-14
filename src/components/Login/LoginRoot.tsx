@@ -7,9 +7,16 @@ interface LoginRootProps {
 
 const LoginRoot = ({ children, handleLogin }: LoginRootProps) => {
 	return (
-		<form onSubmit={handleLogin} className="w-[35rem]">
-			{children}
-		</form>
+		<>
+			<div className="center-container">
+				<div className="text-primary font-bold text-5xl mb-6">
+					Login
+				</div>
+				<form onSubmit={handleLogin} className="w-[35rem]">
+					{children}
+				</form>
+			</div>
+		</>
 	);
 };
 
